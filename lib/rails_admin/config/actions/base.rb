@@ -18,7 +18,7 @@ module RailsAdmin
           []
         end
 
-        # http://twitter.github.com/bootstrap/base-css.html#icons
+        # http://getbootstrap.com/2.3.2/base-css.html#icons
         register_instance_option :link_icon do
           'icon-question-sign'
         end
@@ -30,11 +30,11 @@ module RailsAdmin
 
         register_instance_option :authorized? do
           (
-            bindings[:controller].nil? or bindings[:controller].authorized?(self.authorization_key, bindings[:abstract_model], bindings[:object])
-          ) and (
-            bindings[:abstract_model].nil? or (
-              (only.nil? or [only].flatten.map(&:to_s).include?(bindings[:abstract_model].to_s)) and
-              ![except].flatten.map(&:to_s).include?(bindings[:abstract_model].to_s) and
+            bindings[:controller].nil? || bindings[:controller].authorized?(authorization_key, bindings[:abstract_model], bindings[:object])
+          ) && (
+            bindings[:abstract_model].nil? || (
+              (only.nil? || [only].flatten.collect(&:to_s).include?(bindings[:abstract_model].to_s)) &&
+              ![except].flatten.collect(&:to_s).include?(bindings[:abstract_model].to_s) &&
               bindings[:abstract_model].config.with(bindings).visible?
           ))
         end
@@ -54,14 +54,19 @@ module RailsAdmin
           false
         end
 
+        # Render via pjax?
+        register_instance_option :pjax? do
+          true
+        end
+
         # This block is evaluated in the context of the controller when action is called
         # You can access:
         # - @objects if you're on a model scope
         # - @abstract_model & @model_config if you're on a model or object scope
         # - @object if you're on an object scope
         register_instance_option :controller do
-          Proc.new do
-            render :action => @action.template_name
+          proc do
+            render action: @action.template_name
           end
         end
 
@@ -124,7 +129,7 @@ module RailsAdmin
         end
 
         def self.key
-          self.name.to_s.demodulize.underscore.to_sym
+          name.to_s.demodulize.underscore.to_sym
         end
       end
     end

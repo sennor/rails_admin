@@ -1,9 +1,8 @@
 class Comment
   include Mongoid::Document
-  field :content, :type => String
+  field :content, type: String
   include Mongoid::Timestamps
+  include Taggable
 
-  attr_accessible :commentable_id, :commentable_type, :content
-
-  belongs_to :commentable, :polymorphic => true
+  belongs_to :commentable, polymorphic: true
 end

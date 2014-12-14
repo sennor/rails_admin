@@ -6,7 +6,7 @@ module RailsAdmin
       module Types
         class HasManyAssociation < RailsAdmin::Config::Fields::Association
           # Register field type for the type loader
-          RailsAdmin::Config::Fields::Types::register(self)
+          RailsAdmin::Config::Fields::Types.register(self)
 
           register_instance_option :partial do
             nested_form ? :form_nested_many : :form_filtering_multiselect
@@ -15,6 +15,10 @@ module RailsAdmin
           # orderable associated objects
           register_instance_option :orderable do
             false
+          end
+
+          register_instance_option :inline_add do
+            true
           end
 
           def method_name

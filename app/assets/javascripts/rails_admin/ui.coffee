@@ -1,7 +1,7 @@
 $ = jQuery
 
 $(document).on "click", "#list input.toggle", ->
-  $("#list [name='bulk_ids[]']").attr "checked", $(this).is(":checked")
+  $("#list [name='bulk_ids[]']").prop "checked", $(this).is(":checked")
 
 $(document).on 'click', '.pjax', (event) ->
   if event.which > 1 || event.metaKey || event.ctrlKey
@@ -48,6 +48,10 @@ $(document).on 'click', '.form-horizontal legend', ->
       $(this).siblings('.control-group:hidden').show('slow')
       $(this).children('i').toggleClass('icon-chevron-down icon-chevron-right')
 
+$(document).on 'click', 'form .tab-content .tab-pane a.remove_nested_one_fields', ->
+  $(this).children('input[type="hidden"]').val($(this).hasClass('active')).
+    siblings('i').toggleClass('icon-check icon-trash')
+
 $(document).ready ->
   $(document).trigger('rails_admin.dom_ready')
 
@@ -64,3 +68,22 @@ $(document).on 'rails_admin.dom_ready', ->
     $(this).siblings('.control-group').hide()
 
   $(".table").tooltip selector: "th[rel=tooltip]"
+
+$(document).on 'click', '#fields_to_export label input#check_all', () ->
+  elems = $('#fields_to_export label input')
+  if $('#fields_to_export label input#check_all').is ':checked'
+    $(elems).prop('checked', true)
+  else
+    $(elems).prop('checked',false)
+
+# when the user hits the back button, the inline JS <script> that
+# highlights the current model in the left menu doesn't get run by
+# pjax, so this code runs it:
+# https://github.com/defunkt/jquery-pjax/issues/241#issuecomment-13251065
+$(document).on 'pjax:popstate', () ->
+  $(document).one 'pjax:end', (event) ->
+    $(event.target).find('script').each () ->
+      $.globalEval(this.text || this.textContent || this.innerHTML || '')
+      return
+    return
+  return

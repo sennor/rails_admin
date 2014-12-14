@@ -1,51 +1,75 @@
-source :rubygems
+source 'https://rubygems.org'
 
-group :active_record do
+case ENV['RAILS_VERSION']
+when '4.2'
+  gem 'rails', '~> 4.2.0.beta1'
+  gem 'sass-rails', '~> 5.0.0.beta1'
+  gem 'devise', github: 'plataformatec/devise', branch: 'lm-rails-4-2'
+when '4.0'
+  gem 'rails', '~> 4.0.0'
+  gem 'devise', '>= 3.2'
+else
+  gem 'rails', '~> 4.1.0'
+  gem 'devise', '>= 3.2'
+end
+
+case ENV['CI_ORM']
+when 'mongoid'
+  gem 'mongoid', '~> 4.0.0.beta1'
+  gem 'mongoid-paperclip', '>= 0.0.8', require: 'mongoid_paperclip'
+  gem 'carrierwave-mongoid', '>= 0.6.3', require: 'carrierwave/mongoid'
+else
   platforms :jruby do
-    gem 'activerecord-jdbcsqlite3-adapter', '~> 1.2'
-    gem 'jdbc-sqlite3', '~> 3.6'
+    case ENV['CI_DB_ADAPTER']
+    when 'mysql'
+      gem 'activerecord-jdbcmysql-adapter', '>= 1.2'
+      gem 'jdbc-mysql', '>= 5.1'
+    when 'postgresql'
+      gem 'activerecord-jdbcpostgresql-adapter', '>= 1.2'
+      gem 'jdbc-postgres', '>= 9.2'
+    else
+      gem 'activerecord-jdbcsqlite3-adapter', '>= 1.3.0.beta1'
+      gem 'jdbc-sqlite3', '>= 3.7'
+    end
   end
 
   platforms :ruby, :mswin, :mingw do
     case ENV['CI_DB_ADAPTER']
-    when 'mysql'
-      gem 'mysql', '2.8.1'
+    when 'mysql2'
+      gem 'mysql2', '~> 0.3.14'
     when 'postgresql'
-      gem 'pg', '~> 0.13'
+      gem 'pg', '>= 0.14'
     else
-      gem 'sqlite3', '~> 1.3'
+      gem 'sqlite3', '>= 1.3'
     end
   end
-end
 
-group :mongoid do
-  gem 'mongoid', '~> 3.0'
-  gem 'mongoid-paperclip', '~> 0.0.8', :require => 'mongoid_paperclip'
-  gem 'carrierwave-mongoid', '~> 0.3', :require => 'carrierwave/mongoid'
-end
-
-group :debug do
-  platform :mri_19 do
-    gem 'debugger', '~> 1.2'
-    gem 'simplecov', '~> 0.6', :require => false
-  end
+  gem 'paper_trail', '~> 3.0'
 end
 
 group :development, :test do
-  gem 'strong_parameters', '~> 0.1.5'
-  gem 'cancan', '~> 1.6'
-  gem 'capybara', '~> 1.1'
-  gem 'carrierwave', '~> 0.6'
-  gem 'database_cleaner', '~> 0.8'
-  gem 'devise', '~> 2.1'
-  gem 'dragonfly', '~> 0.9'
-  gem 'factory_girl', '~> 4.1'
-  gem 'generator_spec', '~> 0.8'
-  gem 'launchy', '~> 2.1'
-  gem 'mini_magick', '~> 3.4'
-  gem 'paperclip', '~> 3.3'
-  gem 'rspec-rails', '~> 2.11'
-  gem 'timecop', '~> 0.5'
+  gem 'pry', '>= 0.9'
+end
+
+group :test do
+  gem 'cancan', '>= 1.6'
+  gem 'cancancan', '~> 1.9'
+  gem 'capybara', '>= 2.1'
+  gem 'carrierwave', '>= 0.8'
+  gem 'coveralls'
+  gem 'database_cleaner', '>= 1.2'
+  gem 'dragonfly', '~> 1.0'
+  gem 'factory_girl', '>= 4.2'
+  gem 'generator_spec', '>= 0.8'
+  gem 'launchy', '>= 2.2'
+  gem 'mini_magick', '>= 3.4'
+  gem 'paperclip', '>= 3.4'
+  gem 'poltergeist', '~> 1.5'
+  gem 'rack-cache', require: 'rack/cache'
+  gem 'rspec-rails', '>= 2.14'
+  gem 'rubocop', '>= 0.25'
+  gem 'simplecov', '>= 0.9', require: false
+  gem 'timecop', '>= 0.5'
 end
 
 gemspec

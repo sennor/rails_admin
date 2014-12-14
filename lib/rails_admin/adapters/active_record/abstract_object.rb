@@ -15,16 +15,16 @@ module RailsAdmin
           self.object = object
         end
 
-        def set_attributes(attributes, role = nil)
-          object.assign_attributes(attributes, :as => role)
+        def set_attributes(attributes)
+          object.assign_attributes(attributes) if attributes
         end
 
-        def save(options = { :validate => true })
+        def save(options = {validate: true})
           object.save(options)
         end
 
         def method_missing(name, *args, &block)
-          self.object.send(name, *args, &block)
+          object.send(name, *args, &block)
         end
       end
     end

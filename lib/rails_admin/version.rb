@@ -1,18 +1,15 @@
 module RailsAdmin
   class Version
-    MAJOR = 0 unless defined? MAJOR
-    MINOR = 4 unless defined? MINOR
-    PATCH = 3 unless defined? PATCH
-    PRE = nil unless defined? PRE
+    MAJOR = 0
+    MINOR = 6
+    PATCH = 5
+    PRE = nil
 
     class << self
-
       # @return [String]
       def to_s
         [MAJOR, MINOR, PATCH, PRE].compact.join('.')
       end
-
     end
-
   end
 end

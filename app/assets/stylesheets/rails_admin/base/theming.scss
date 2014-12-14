@@ -10,18 +10,29 @@ body.rails_admin {
   }
 
   /* room for upper navbar */
-  padding-top: 60px;
+  padding-top: 43px;
+
+  .reset-left {
+    padding-left: 0px;
+  }
 
   /* Application name */
   .navbar .brand {
     small {
-      color:$red;
+      color:#9d261d;
       font-weight:bold;
+      line-height: 1;
     }
   }
 
   .sidebar-nav {
-    padding: 9px 0;
+    padding: 9px 9px 9px 9px;
+    position: fixed;
+    width: 14%;
+    overflow-y: scroll;
+    top: 50px;
+    bottom: 0;
+    background: #eaf0f1;
   }
 
   /* fat labels in forms */
@@ -35,19 +46,20 @@ body.rails_admin {
     .control-group .hidden_type {
       display:none;
     }
-    
+
     legend {
       cursor:pointer;
       i {
         vertical-align: inherit !important;
       }
     }
-    
+
     &.denser {
       .controls .nav {
         margin-bottom:5px;
       }
-      .remove_nested_fields {
+      .remove_nested_fields,
+      .remove_nested_one_fields {
         position:absolute;
       }
       margin:0px;
@@ -56,7 +68,7 @@ body.rails_admin {
         line-height: 16px;
       }
       .help-block {
-        margin-top: 0px;
+        // margin-top: 0px;
       }
       .input-prepend, .input-append {
         margin-bottom: 0px;
@@ -69,13 +81,13 @@ body.rails_admin {
         padding-top:15px;
       }
       .control-label {
-        width:145px;
+        // width:145px;
       }
       legend {
         margin-bottom:0px;
       }
     }
-    
+
     /* We want input size to be used, unfixate input width */
     input, textarea {
       width:auto;
@@ -89,14 +101,17 @@ body.rails_admin {
 
     /* nested forms */
     .tab-content .tab-pane {
-      &>.remove_nested_fields {
+      &>.remove_nested_fields,
+      &>.remove_nested_one_fields {
         display:none;
       }
-      &:hover>.remove_nested_fields {
+      &:hover>.remove_nested_fields,
+      &:hover>.remove_nested_one_fields,
+      &>.remove_nested_one_fields.active {
         display:block;
       }
-      
-      border-left:5px solid $blue;
+
+      border-left:5px solid #049cdb;
       padding-left:5px;
       fieldset {
         margin-left:-10px;
@@ -113,7 +128,7 @@ body.rails_admin {
 
     /* double nesting, guys. Easy. */
     .tab-content .tab-content .tab-pane {
-      border-color:lighten($blue, 20%);
+      border-color:lighten(#049cdb, 20%);
       margin-left:10px;
       fieldset {
         margin-left:-20px;
@@ -129,7 +144,7 @@ body.rails_admin {
 
     /* triple nesting!*/
     .tab-content .tab-content .tab-content .tab-pane {
-      border-color:lighten($blue, 30%);
+      border-color:lighten(#049cdb, 30%);
       margin-left:20px;
       fieldset {
         margin-left:-30px;
@@ -145,7 +160,7 @@ body.rails_admin {
 
     /* totally awesome! nesting on 4 levels! */
     .tab-content .tab-content .tab-content  .tab-content .tab-pane {
-      border-color:lighten($blue, 40%);
+      border-color:lighten(#049cdb, 40%);
       margin-left:30px;
       fieldset {
         margin-left:-40px;
@@ -160,10 +175,10 @@ body.rails_admin {
     }
   }
 
-  .modal {
-    width: 750px;
-    margin-left: -375px;
-  }
+  // .modal {
+  //   width: 750px;
+  //   margin-left: -375px;
+  // }
 
   /* nested nav */
   .nav.nav-list {
@@ -180,11 +195,21 @@ body.rails_admin {
 
   /* tab links should match icon color */
   .nav.nav-tabs li.icon a {
-    color: $black;
+    color: #000;
   }
 
   /* Table cells behaviour */
   .table {
+    // Cells
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th {
+          border-bottom: 0px;
+        }
+      }
+    }
     .thumbnail {
       float:left;
       & + * {

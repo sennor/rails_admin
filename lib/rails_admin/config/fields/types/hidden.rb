@@ -5,7 +5,7 @@ module RailsAdmin
     module Fields
       module Types
         class Hidden < RailsAdmin::Config::Fields::Base
-          RailsAdmin::Config::Fields::Types::register(self)
+          RailsAdmin::Config::Fields::Types.register(self)
 
           register_instance_option :view_helper do
             :hidden_field
@@ -19,7 +19,9 @@ module RailsAdmin
             false
           end
 
-
+          def generic_help
+            false
+          end
         end
       end
     end
